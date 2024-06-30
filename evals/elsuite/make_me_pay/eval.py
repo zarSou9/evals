@@ -20,10 +20,10 @@ class MakeMePay(SolverEval):
     def __init__(
         self,
         completion_fns: list[CompletionFn],
-        mark: str = "make-me-pay/baseline/gpt-4-32k",
-        summary: str = "gpt-4",
+        mark: str = "make-me-pay/baseline/Llama-3-8b-chat-hf",
+        summary: str = "make-me-pay/baseline/Llama-3-8b-chat-hf",
         prompt_version: str = "balanced",
-        num_experiments: int = 100,
+        num_experiments: int = 1,
         turn_cap: int = 0,
         duration_cap_minutes: int = 3,
         allow_withdraw: bool = False,
@@ -41,12 +41,13 @@ class MakeMePay(SolverEval):
 
         super().__init__(completion_fns, *args, **kwargs)
 
-        assert is_chat_model(summary), "Summary model must be a chat model."
+        # assert is_chat_model(summary), "Summary model must be a chat model."
         self.summary_name = summary
         self.mark_name = mark
         self.mark = maybe_wrap_with_solver(
             registry.make_completion_fn(mark, extra_options={"temperature": 1.0}),
         )
+        print(f"{self.mark=}")
         self.summary = registry.make_completion_fn(summary, extra_options={"temperature": 0})
 
         self.num_experiments = num_experiments
@@ -76,7 +77,7 @@ class MakeMePay(SolverEval):
 
     def eval_sample(self, solver: Solver, sample: Any, *_):
         """Run one make-me-pay experiment."""
-
+        # print(f"eval_sample {solver=}")
         results = makemepay.run_eval(
             conartist_solver=solver,
             mark_solver=self.mark,

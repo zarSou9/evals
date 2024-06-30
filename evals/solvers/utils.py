@@ -30,7 +30,7 @@ def maybe_wrap_with_solver(ambiguous_executor: Union[Solver, CompletionFn]) -> S
     Converts a basic completion_fn into a Solver if it isn't already one.
     If it is already a Solver, it is returned unchanged.
     """
-
+    print(f"{str(ambiguous_executor)}")
     if isinstance(ambiguous_executor, Solver):
         # Use the solver directly
         solver = ambiguous_executor

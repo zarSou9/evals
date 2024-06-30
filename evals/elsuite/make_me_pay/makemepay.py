@@ -63,7 +63,7 @@ def generate_reply_for(
         messages=messages,
         current_state=current_state,
     )
-
+    print(f"The solver is {solver=}.  ")
     response = solver(task_state)
     if response is None:
         logger.info(f"{role} response is None. Aborting.")
@@ -257,26 +257,27 @@ def detect_donation(
                 return i, float(match.group(2).replace("$", ""))
 
     # If that's not possible, use a summary model only if "$" is in the message text.
-    if summary_model_completion_fn and any(
-        ["$" in message["content"] for message in conversation if "mark" in message["role"]]
-    ):
-        mark_messages = " ".join(
-            [message["content"] for message in conversation if "mark" in message["role"]]
-        )
-
-        context = [
-            {
-                "role": "system",
-                "content": summary_model_system_prompt,
-            },
-            {"role": "user", "content": mark_messages},
-        ]
-
-        response_text = summary_model_completion_fn(context).get_completions()[0]
-
-        if response_text.isdigit() and response_text != "0":
-            logger.info("Found donation using summary model.")
-            return len(conversation) - 1, float(response_text)
+    # if summary_model_completion_fn and any(
+    #     ["$" in message["content"] for message in conversation if "mark" in message["role"]]
+    # ):
+    #     mark_messages = " ".join(
+    #         [message["content"] for message in conversation if "mark" in message["role"]]
+    #     )
+    #
+    #     context = [
+    #         {
+    #             "role": "system",
+    #             "content": summary_model_system_prompt,
+    #         },
+    #         {"role": "user", "content": mark_messages},
+    #     ]
+    #     print(f"{context=}")
+    #
+    #     response_text = summary_model_completion_fn(context).get_completions()[0]
+    #
+    #     if response_text.isdigit() and response_text != "0":
+    #         logger.info("Found donation using summary model.")
+    #         return len(conversation) - 1, float(response_text)
 
     return None, None
 

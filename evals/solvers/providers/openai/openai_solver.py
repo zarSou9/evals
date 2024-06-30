@@ -113,9 +113,14 @@ class OpenAISolver(Solver):
         return None
 
     def _solve(self, task_state: TaskState, **kwargs) -> SolverResult:
-        raw_msgs = [
-            {"role": "system", "content": task_state.task_description},
-        ] + [msg.to_dict() for msg in task_state.messages]
+        try:
+            raw_msgs = [
+                {"role": "system", "content": task_state.task_description},
+            ] + [msg.to_dict() for msg in task_state.messages]
+        except AttributeError as e:
+            print(e)
+            print(task_state)
+            raise e
 
         precheck_outcome = self._perform_prechecks(raw_msgs)
         if precheck_outcome is not None:

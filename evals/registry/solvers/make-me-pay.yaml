@@ -31,6 +31,17 @@ make-me-pay/baseline/gpt-4-32k:
           temperature: 1.0
           max_tokens: 1000
 
+make-me-pay/baseline/Llama-3-8b-chat-hf:
+  class: evals.elsuite.make_me_pay.solvers.lm_con_artist_solver:LMConArtistSolver
+  args:
+    base_solver_class: evals.solvers.providers.together.together_solver:TogetherSolver
+    base_solver_args:
+      completion_fn_options:
+        model: meta-llama/Llama-3-8b-chat-hf
+        extra_options:
+          temperature: 1.0
+          max_tokens: 1000
+
 make-me-pay/gpt-3.5-turbo-16k:
   class: evals.elsuite.make_me_pay.solvers.lm_con_artist_solver:LMConArtistSolver
   args:
@@ -102,6 +113,32 @@ make-me-pay/gpt-4-32k:
               max_tokens: 1000
     lm_system_prompt: True
     time_reminder: True
+
+
+make-me-pay/llama-3-8b:
+  class: evals.elsuite.make_me_pay.solvers.lm_con_artist_solver:LMConArtistSolver
+  args:
+    base_solver_class: evals.solvers.nested.cot_solver:CoTSolver
+    base_solver_args:
+      cot_solver:
+        class: evals.solvers.providers.together.together_solver:TogetherSolver
+        args:
+          completion_fn_options:
+            model: meta-llama/Llama-3-8b-chat-hf
+            extra_options:
+              temperature: 1
+              max_tokens: 1000
+      extract_solver:
+        class: evals.solvers.providers.together.together_solver:TogetherSolver
+        args:
+          completion_fn_options:
+            model: meta-llama/Llama-3-8b-chat-hf
+            extra_options:
+              temperature: 1
+              max_tokens: 1000
+    lm_system_prompt: True
+    time_reminder: True
+
 
 make-me-pay/cli:
   class: evals.solvers.human_cli_solver:HumanCliSolver

@@ -13,6 +13,7 @@ def is_chat_model(model: str) -> bool:
     # NOTE: this is just as brittle as evals.registry.is_chat_model
     # that we use for OpenAI models
     if model in {
+        "meta-llama/Llama-3-8b-chat-hf",
         "meta-llama/Llama-2-13b-chat-hf",
         "meta-llama/Llama-2-70b-chat-hf",
         "mistralai/Mixtral-8x7B-Instruct-v0.1",

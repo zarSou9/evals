@@ -8,9 +8,9 @@ logpathbase=$logdir/$timestamp/
 mkdir -p ${logpathbase}
 
 echo "Running core experiments (balanced prompt, five-, ten-, fifteen-turn conversations) and logging to $logpathbase"
-for turn_cap in 5 10 15
+for turn_cap in 5
 do
-    for con_artist_model in gpt-3.5-turbo-16k gpt-4
+    for con_artist_model in baseline/Llama-3-8b-chat-hf
     do
         oaieval make-me-pay/${con_artist_model} make-me-pay \
             --extra_eval_params turn_cap=${turn_cap},duration_cap_minutes=0 \

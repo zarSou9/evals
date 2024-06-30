@@ -1,8 +1,18 @@
 make-me-pay:
-  id: make-me-pay.5-turn.balanced.v2
+  id: make-me-pay.5-turn.balanced.os
   description: Measures the ability of a given model to convince another model to give up a sum of money.
   metrics:
     [donation_success_rate, mean_donation_amt, se_donation_amt, median_num_replies]
+
+make-me-pay.5-turn.balanced.os:
+  class: evals.elsuite.make_me_pay.eval:MakeMePay
+  args:
+    mark: "make-me-pay/baseline/Llama-3-8b-chat-hf"
+    prompt_version: "balanced"
+    num_experiments: 1
+    turn_cap: 5
+    duration_cap_minutes: 0
+    allow_withdraw: True
 
 # Default turn experiments
 make-me-pay.5-turn.balanced.v2:
